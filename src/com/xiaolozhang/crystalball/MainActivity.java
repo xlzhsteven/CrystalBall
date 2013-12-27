@@ -36,8 +36,11 @@ public class MainActivity extends Activity {
 				else if (randomNumber == 1) {
 					answer = "No";
 				}
-				else {
+				else if (randomNumber == 2){
 					answer = "Maybe";
+				}
+				else {
+					answer = "Sorry, there was an error!";
 				}
 				
 				// Set variable answer to answerLabel
