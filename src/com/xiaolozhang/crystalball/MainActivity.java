@@ -22,11 +22,19 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				// Create variable answer to store empty string
 				String answer = "";
+				
+				// Random generator
 				Random randomGenerator = new Random();
+				
+				// Generate integer from 0 to 2
 				int randomNumber = randomGenerator.nextInt(3);
+				
+				// Set number to a string
 				answer = Integer.toString(randomNumber);
+				
+				// Set variable answer to answerLabel
 				answerLabel.setText(answer);
 			}
 		});
