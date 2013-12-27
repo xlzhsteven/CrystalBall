@@ -30,9 +30,15 @@ public class MainActivity extends Activity {
 				
 				// Generate integer from 0 to 2
 				int randomNumber = randomGenerator.nextInt(3);
-				
-				// Set number to a string
-				answer = Integer.toString(randomNumber);
+				if (randomNumber == 0) {
+					answer = "Yes";
+				}
+				else if (randomNumber == 1) {
+					answer = "No";
+				}
+				else {
+					answer = "Maybe";
+				}
 				
 				// Set variable answer to answerLabel
 				answerLabel.setText(answer);
