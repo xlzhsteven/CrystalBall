@@ -22,27 +22,22 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				String[] answers = { "It is certain", "It is decidedly so",
+						"All signs say YES", "The stars are not aligned",
+						"My reply is no", "It is doubtful",
+						"Better not tell you now", "Concentrate and ask again",
+						"Unable to answer now" };
+
 				// Create variable answer to store empty string
 				String answer = "";
-				
+
 				// Random generator
 				Random randomGenerator = new Random();
-				
-				// Generate integer from 0 to 2
-				int randomNumber = randomGenerator.nextInt(3);
-				if (randomNumber == 0) {
-					answer = "Yes";
-				}
-				else if (randomNumber == 1) {
-					answer = "No";
-				}
-				else if (randomNumber == 2){
-					answer = "Maybe";
-				}
-				else {
-					answer = "Sorry, there was an error!";
-				}
-				
+
+				// Generate integer from 0 to the length of the answers array
+				int randomNumber = randomGenerator.nextInt(answers.length);
+				answer = answers[randomNumber];
+
 				// Set variable answer to answerLabel
 				answerLabel.setText(answer);
 			}
