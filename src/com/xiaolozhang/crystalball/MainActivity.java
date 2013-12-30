@@ -2,22 +2,30 @@ package com.xiaolozhang.crystalball;
 
 import android.app.Activity;
 import android.graphics.drawable.AnimationDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.xiaolozhang.crystalball.ShakeDetector.OnShakeListener;
 
 public class MainActivity extends Activity {
 	// member variable(s)
 	private CrystalBall mCrystalBall = new CrystalBall();
 	private TextView mAnswerLabel;
-	private Button mGetAnswerButton;
+	// private Button mGetAnswerButton;
 	private ImageView mCrystalBallImage;
+
+	// member variable for shake motion detection
+	private SensorManager mSensorManager;
+	private Sensor mAccelerometer;
+	private ShakeDetector mShakeDetector;
+
 	// method(s)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,22 +33,34 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		// Declare our new variable
 		mAnswerLabel = (TextView) findViewById(R.id.textView1);
-		mGetAnswerButton = (Button) findViewById(R.id.button1);
+		// mGetAnswerButton = (Button) findViewById(R.id.button1);
 		mCrystalBallImage = (ImageView) findViewById(R.id.imageView1);
-		
-		mGetAnswerButton.setOnClickListener(new View.OnClickListener() {
-		
+
+		// setup onShake action
+		mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+		mAccelerometer = mSensorManager
+				.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		mShakeDetector = new ShakeDetector(new OnShakeListener() {
+
 			@Override
-			public void onClick(View v) {
-				String answer = mCrystalBall.getAnAnswer();
-				animateCrystalBall();
-				animateAnswer();
-				playSound();
-				// Set variable answer to answerLabel
-				mAnswerLabel.setText(answer);
+			public void onShake() {
+				// TODO Auto-generated method stub
+				handleNewAnswer();
 			}
 		});
+	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+				SensorManager.SENSOR_DELAY_UI);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		mSensorManager.unregisterListener(mShakeDetector);
 	}
 
 	// Crystal Ball animation
@@ -67,24 +87,34 @@ public class MainActivity extends Activity {
 		mAnswerLabel.setAnimation(fadeInAnimation);
 	}
 
-	// User MediaPlayer to play sound use static method MediaPlayer.create(this, R.raw.crystal_ball)
-	private void playSound(){
+	// User MediaPlayer to play sound use static method MediaPlayer.create(this,
+	// R.raw.crystal_ball)
+	private void playSound() {
 		MediaPlayer player = MediaPlayer.create(this, R.raw.crystal_ball);
 		player.start();
 		player.setOnCompletionListener(new OnCompletionListener() {
-			
+
 			@Override
 			public void onCompletion(MediaPlayer mp) {
 				mp.release();
 			}
 		});
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	private void handleNewAnswer() {
+		String answer = mCrystalBall.getAnAnswer();
+		animateCrystalBall();
+		animateAnswer();
+		playSound();
+		// Set variable answer to answerLabel
+		mAnswerLabel.setText(answer);
 	}
 
 }
