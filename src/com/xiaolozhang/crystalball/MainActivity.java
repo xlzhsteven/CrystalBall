@@ -7,16 +7,17 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.xiaolozhang.crystalball.ShakeDetector.OnShakeListener;
 
 public class MainActivity extends Activity {
+	public static final String TAG = MainActivity.class.getSimpleName();
+	
 	// member variable(s)
 	private CrystalBall mCrystalBall = new CrystalBall();
 	private TextView mAnswerLabel;
@@ -50,14 +51,11 @@ public class MainActivity extends Activity {
 				handleNewAnswer();
 			}
 		});
-		
+
 		// Adding toast message notification
-		// Toast.makeText(this, "Yah! Our activity is created!", Toast.LENGTH_LONG).show();
-		Toast welcomeToast = Toast.makeText(this, "Look at me up here", Toast.LENGTH_LONG);
-		
-		// The following gravity setting pull the message to the top of the screen
-		welcomeToast.setGravity(Gravity.TOP, 0, 0);
-		welcomeToast.show();
+		// Toast.makeText(this, "Yah! Our activity is created!",
+		// Toast.LENGTH_LONG).show();
+		Log.d(TAG, "This is logging from onCreate method!");
 	}
 
 	@Override
